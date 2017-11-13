@@ -14,28 +14,41 @@ public class Main {
             studentNr = args[0];
         }
 
-        String url = "https://studies.cs.helsinki.fi/ohtustats/students/"+studentNr+"/submissions";
-
-        String bodyText = Request.Get(url).execute().returnContent().asString();
-
+        String studentUrl = "https://studies.cs.helsinki.fi/ohtustats/students/"+studentNr+"/submissions";
+		String courseInfoUrl = "https://studies.cs.helsinki.fi/ohtustats/courseinfo";
+		
+        String studentBodyText = Request.Get(studentUrl).execute().returnContent().asString();
+		String courseInfoBodyText = Request.Get(courseInfoUrl).execute().returnContent().asString();
         //System.out.println("json-muotoinen data:");
         //System.out.println( bodyText );
 
-        Gson mapper = new Gson();
-        Submission[] subs = mapper.fromJson(bodyText, Submission[].class);
+        Gson studentMapper = new Gson();
+        Submission[] subs = studentMapper.fromJson(studentBodyText, Submission[].class);
+		
+		Gson courseInfoMapper = new Gson();
+        CourseInfo courseinfo = courseInfoMapper.fromJson(courseInfoBodyText, CourseInfo.class);
         
 		int totalHours = 0;
-		int totalExecises = 0;
-				
-        System.out.println("opiskelijanumero:" + studentNr);
+		int totalExercises = 0;
+
+		System.out.println("Kurssi: " + courseinfo.getName() + ", " + courseinfo.getTerm());
 		System.out.println();
+        System.out.println("opiskelijanumero: " + studentNr);
+		System.out.println();
+		
+
         for (Submission submission : subs) {
-            System.out.println(submission);
+            
+			int currentWeek = submission.getWeek();
+			int maxExercises = courseinfo.getMaximumExercises(currentWeek);
+			submission.setMaxExercises(maxExercises);
+			System.out.println(submission);
+			
 			totalHours += submission.getHours();
-			totalExecises += submission.getExerciseCount();
+			totalExercises += submission.getExerciseCount();
         }	
 		System.out.println();
-		System.out.println("yhteensä: " + totalExecises + " tehtävää " + totalHours + " tuntia");
+		System.out.println("yhteensä: " + totalExercises + " tehtävää " + totalHours + " tuntia");
 
     }
 }
