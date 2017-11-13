@@ -1,6 +1,9 @@
 package ohtu;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.IOException;
 import org.apache.http.client.fluent.Request;
 
@@ -16,9 +19,11 @@ public class Main {
 
         String studentUrl = "https://studies.cs.helsinki.fi/ohtustats/students/"+studentNr+"/submissions";
 		String courseInfoUrl = "https://studies.cs.helsinki.fi/ohtustats/courseinfo";
+		String courseStatsUrl = "https://studies.cs.helsinki.fi/ohtustats/stats";
 		
         String studentBodyText = Request.Get(studentUrl).execute().returnContent().asString();
 		String courseInfoBodyText = Request.Get(courseInfoUrl).execute().returnContent().asString();
+		String courseStatsBodyText = Request.Get(courseStatsUrl).execute().returnContent().asString();
         //System.out.println("json-muotoinen data:");
         //System.out.println( bodyText );
 
@@ -28,6 +33,25 @@ public class Main {
 		Gson courseInfoMapper = new Gson();
         CourseInfo courseinfo = courseInfoMapper.fromJson(courseInfoBodyText, CourseInfo.class);
         
+		String statsResponse = courseStatsBodyText;
+		JsonParser parser = new JsonParser();
+		JsonObject courseStats = parser.parse(statsResponse).getAsJsonObject();
+		
+		int statsLength = courseStats.size();
+		int allSubmissions = 0;
+		int allHours = 0;
+		int allExercises = 0;
+		
+		for(int i = 1; i < statsLength + 1; i++) {
+			JsonObject j = courseStats.getAsJsonObject("" +i);
+			JsonElement s = j.get("students");
+			JsonElement h = j.get("hour_total");
+			JsonElement e = j.get("exercise_total");
+			allSubmissions += s.getAsInt();
+			allHours += h.getAsInt();
+			allExercises += e.getAsInt();
+		}
+		
 		int totalHours = 0;
 		int totalExercises = 0;
 
@@ -49,6 +73,7 @@ public class Main {
         }	
 		System.out.println();
 		System.out.println("yhteensä: " + totalExercises + " tehtävää " + totalHours + " tuntia");
+		System.out.println("kurssilla yhteensä " + allSubmissions + " palautusta, palautettuja tehtäviä " + allExercises + " kpl,  joihin on mennyt yhteensä " + allHours + " tuntia");
 
     }
 }
