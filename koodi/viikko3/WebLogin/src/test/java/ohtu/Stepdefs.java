@@ -7,11 +7,13 @@ import cucumber.api.java.en.When;
 import static org.junit.Assert.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public class Stepdefs {
-    WebDriver driver = new ChromeDriver();
+	WebDriver driver = new HtmlUnitDriver();
+    //WebDriver driver = new ChromeDriver();
     String baseUrl = "http://localhost:4567";
     
     @Given("^login is selected$")
@@ -59,6 +61,19 @@ public class Stepdefs {
         element = driver.findElement(By.name("signup"));
         element.submit();  
     }
+	
+	@Given("^user with username \"([^\"]*)\" and password \"([^\"]*)\" is tried to be created$")
+	public void new_unsuccesful_account(String username, String password) throws Throwable {
+		new_user_selected();
+		username_and_matching_password_are_entered(username, password);
+	}
+	
+	@Given("^user with username \"([^\"]*)\" with password \"([^\"]*)\" is successfully created$")
+	public void new_successful_account_created(String username, String password) throws Throwable {
+		new_user_selected();
+		new_username_and_password_and_password_confirmation_are_given(username, password, password);
+		logout();
+	}
 	
 	@When("^new username \"([^\"]*)\" and password \"([^\"]*)\" and password confirmation \"([^\"]*)\" are given$")
     public void new_username_and_password_and_password_confirmation_are_given(String username, String password, String passwordConfirmation) throws Throwable {
