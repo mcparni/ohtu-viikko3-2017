@@ -12,6 +12,6 @@ Then user is not logged in and error message is given
 
 Scenario: nonexistent user can not login
 Given login is selected
-When correct username "jukkat" and incorrect password "wrong" are given
+When incorrect username "jukkatas" and password "wrong" are given
 Then user is not logged in and error message is given
 

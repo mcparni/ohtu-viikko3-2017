@@ -69,6 +69,11 @@ public class Stepdefs {
     public void username_correct_and_password_are_given(String username, String password) throws Throwable {
         logInWith(username, password);
     }
+	
+	@When("^incorrect username \"([^\"]*)\" and password \"([^\"]*)\" are given$")
+    public void inusername_correct_and_password_are_given(String username, String password) throws Throwable {
+        logInWith(username, password);
+    }
 
     @When("^correct username \"([^\"]*)\" and incorrect password \"([^\"]*)\" are given$")
     public void username_and_incorrect_password_are_given(String username, String password) throws Throwable {
