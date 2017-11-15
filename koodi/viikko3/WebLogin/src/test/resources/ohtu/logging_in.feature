@@ -5,7 +5,13 @@ Given login is selected
 When correct username "jukka" and password "akkuj" are given
 Then user is logged in
 
-Scenario: user can not login with incorrect password
+Scenario: user can not login with correct username and incorrect password
 Given login is selected
 When correct username "jukka" and incorrect password "wrong" are given
 Then user is not logged in and error message is given
+
+Scenario: nonexistent user can not login
+Given login is selected
+When correct username "jukkat" and incorrect password "wrong" are given
+Then user is not logged in and error message is given
+

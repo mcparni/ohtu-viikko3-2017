@@ -19,16 +19,45 @@ public class Stepdefs {
         driver.get(baseUrl);
         WebElement element = driver.findElement(By.linkText("login"));       
         element.click();          
-    } 
-
-    @When("^username \"([^\"]*)\" and password \"([^\"]*)\" are given$")
-    public void username_and_password_are_given(String username, String password) throws Throwable {
+    }
+	
+	@Given("^new user is selected$")
+    public void new_user_selected() throws Throwable {
+        driver.get(baseUrl);
+        WebElement element = driver.findElement(By.linkText("register new user"));       
+        element.click();          
+    }
+	
+	@When("^user \"([^\"]*)\" with password \"([^\"]*)\" is created$")
+	public void new_user_is_created(String username, String password) throws Throwable {
+		new_username_and_password_and_password_confirmation_are_given(username, password, password);
+	}
+	
+	
+	@When("^new username \"([^\"]*)\" and password \"([^\"]*)\" and password confirmation \"([^\"]*)\" are given$")
+    public void new_username_and_password_and_password_confirmation_are_given(String username, String password, String passwordConfirmation) throws Throwable {
         WebElement element = driver.findElement(By.name("username"));
         element.sendKeys(username);
         element = driver.findElement(By.name("password"));
         element.sendKeys(password);
-        element = driver.findElement(By.name("login"));
+		element = driver.findElement(By.name("passwordConfirmation"));
+        element.sendKeys(passwordConfirmation);
+        element = driver.findElement(By.name("signup"));
         element.submit();  
+    }
+	
+	@Given("^navigate to main page is selected$")
+    public void navigate_to_mainpage() throws Throwable {
+        driver.get(baseUrl + "/welcome");
+        WebElement element = driver.findElement(By.linkText("continue to application mainpage"));       
+        element.click();          
+    }
+	
+	@When("^logout is selected$")
+    public void logout() throws Throwable {
+        driver.get(baseUrl + "/ohtu");
+        WebElement element = driver.findElement(By.linkText("logout"));       
+        element.click();          
     }
 
     @Then("^system will respond \"([^\"]*)\"$")
@@ -49,6 +78,16 @@ public class Stepdefs {
     @Then("^user is logged in$")
     public void user_is_logged_in() throws Throwable {
         pageHasContent("Ohtu Application main page");
+    }
+	
+	@Then("^user is logged out$")
+    public void logged_out() throws Throwable {
+        pageHasContent("Ohtu App");
+    }
+	
+	@Then("^new account is created$")
+    public void new_account_created() throws Throwable {
+        pageHasContent("Welcome to Ohtu Application!");
     }
     
     @Then("^user is not logged in and error message is given$")
