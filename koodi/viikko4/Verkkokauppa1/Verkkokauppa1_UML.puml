@@ -1,0 +1,17 @@
+@startuml
+annotation java.lang.Override
+class java.util.ArrayList
+class ohtu.Main
+class ohtu.verkkokauppa.Kauppa
+class ohtu.verkkokauppa.Kirjanpito
+class ohtu.verkkokauppa.Ostoskori
+class ohtu.verkkokauppa.Pankki
+class ohtu.verkkokauppa.Tuote
+class ohtu.verkkokauppa.Varasto
+class ohtu.verkkokauppa.Viitegeneraattori
+ohtu.Main ..> ohtu.verkkokauppa.Kauppa
+ohtu.Main ..> ohtu.verkkokauppa.Kirjanpito
+ohtu.verkkokauppa.Kirjanpito ..> java.util.ArrayList
+ohtu.verkkokauppa.Ostoskori ..> java.util.ArrayList
+ohtu.verkkokauppa.Tuote ..> java.lang.Override
+@enduml
