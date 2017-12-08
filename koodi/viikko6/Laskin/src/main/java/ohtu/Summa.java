@@ -28,10 +28,5 @@ public class Summa implements Komento {
         tuloskentta.setText("" + laskunTulos);
 		
 	}
-	
-	@Override
-	public void peru() {
-	
-	}
-	
+
 }

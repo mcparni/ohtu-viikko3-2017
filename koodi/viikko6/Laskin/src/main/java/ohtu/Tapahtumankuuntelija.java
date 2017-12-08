@@ -30,25 +30,19 @@ public class Tapahtumankuuntelija implements ActionListener {
         komennot.put(plus, new Summa(sovellus, tuloskentta, syotekentta));
         komennot.put(miinus, new Erotus(sovellus, tuloskentta, syotekentta));
         komennot.put(nollaa, new Nollaa(sovellus, tuloskentta, syotekentta));
+		komennot.put(undo, new Peru(sovellus, tuloskentta, syotekentta));
     }
     
     @Override
     public void actionPerformed(ActionEvent ae) {
 		
 		Komento komento = komennot.get(ae.getSource());
+		komento.suorita();
 		
-		if  (komento!=null) {
-            komento.suorita();
-			edellinen = komento;
-        } else {
-            // toiminto oli undo
-			edellinen.peru();
-			System.out.println("undo");
-            edellinen = null;
-        }
-         
-       nollaa.setEnabled(sovellus.tulos()!=0);
-       undo.setEnabled(edellinen!=null);
+		nollaa.setEnabled(sovellus.tulos()!=0);
+	
+		
+		undo.setEnabled(sovellus.peruttavat());
     }
  
 }
