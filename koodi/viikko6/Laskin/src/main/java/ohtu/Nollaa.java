@@ -23,4 +23,9 @@ public class Nollaa implements Komento {
 		
 	}
 	
+	@Override
+	public void peru() {
+	
+	}
+	
 }

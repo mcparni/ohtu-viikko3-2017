@@ -29,4 +29,9 @@ public class Summa implements Komento {
 		
 	}
 	
+	@Override
+	public void peru() {
+	
+	}
+	
 }

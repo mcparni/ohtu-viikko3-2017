@@ -29,4 +29,9 @@ public class Erotus implements Komento {
 		
 	}
 	
+	@Override
+	public void peru() {
+	
+	}
+	
 }
